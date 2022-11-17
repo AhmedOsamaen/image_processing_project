@@ -11,7 +11,7 @@ app.listen(port, function () {
     console.log('The server started on port::>> ', port);
 });
 app.get('/', function (req, res) {
-    res.send("Image Processing App is working");
+    res.send('Image Processing App is working');
 });
 app.use('/convert', convert_img_route_1.default.routes);
 exports.default = app;

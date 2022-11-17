@@ -48,13 +48,13 @@ var request = (0, supertest_1.default)(index_1.default);
 convert_img_route_1.default.processImg('fjord', 452, 412);
 describe('Test endpoint responses', function () {
     it('gets the main endpoint', function (done) {
-        request.get('/').
-            expect(200);
+        request.get('/').expect(200);
         done();
     });
     it('gets the convert endpoint', function (done) {
-        request.get('/convert?imgName=santamonica&width=1000&height=800').
-            expect(200);
+        request
+            .get('/convert?imgName=santamonica&width=1000&height=800')
+            .expect(200);
         done();
     });
 });
@@ -62,7 +62,7 @@ describe('Test image functions', function () {
     // beforeEach(() => {
     //     routes.processImg('fjord',452,412);
     // });
-    it("saves image to assets", function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('saves image to assets', function () { return __awaiter(void 0, void 0, void 0, function () {
         var savedFileName;
         return __generator(this, function (_a) {
             savedFileName = consts_1.processedImgsDir + 'fjord_' + 452 + '_' + 412 + '.jpg';

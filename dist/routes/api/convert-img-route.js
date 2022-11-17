@@ -70,10 +70,13 @@ routes.get('/', logger_1.default, function (req, res) {
                     }
                     processImg(imgName, +imgWidth, +imgHeight);
                     img = consts_1.mainImgsDir + imgName + '.jpg';
-                    return [4 /*yield*/, (0, sharp_1.default)(img).resize({ width: +imgWidth, height: +imgHeight }).toBuffer()
+                    return [4 /*yield*/, (0, sharp_1.default)(img)
+                            .resize({ width: +imgWidth, height: +imgHeight })
+                            .toBuffer()
                             .then(function (data) {
                             res.type('jpg').send(data);
-                        }).catch(function (e) {
+                        })
+                            .catch(function (e) {
                             console.log('e :>> ', e);
                             return e;
                         })];
@@ -87,6 +90,8 @@ routes.get('/', logger_1.default, function (req, res) {
 function processImg(fileName, imgWidth, imgHeight) {
     var img = consts_1.mainImgsDir + fileName + '.jpg';
     var savedFileName = consts_1.processedImgsDir + fileName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-    (0, sharp_1.default)(img).resize({ width: imgWidth, height: imgHeight }).toFile(savedFileName);
+    (0, sharp_1.default)(img)
+        .resize({ width: imgWidth, height: imgHeight })
+        .toFile(savedFileName);
 }
 exports.default = { routes: routes, processImg: processImg };
