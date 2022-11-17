@@ -43,4 +43,4 @@ function  processImg(fileName:string,imgWidth:number,imgHeight:number): void{
    
 }
 
-export default routes;
+export default {routes,processImg};

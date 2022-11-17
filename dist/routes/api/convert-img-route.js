@@ -89,4 +89,4 @@ function processImg(fileName, imgWidth, imgHeight) {
     var savedFileName = consts_1.processedImgsDir + fileName + '_' + imgWidth + '_' + imgHeight + '.jpg';
     (0, sharp_1.default)(img).resize({ width: imgWidth, height: imgHeight }).toFile(savedFileName);
 }
-exports.default = routes;
+exports.default = { routes: routes, processImg: processImg };
