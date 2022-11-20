@@ -23,28 +23,44 @@ const handler = (
     res.send("No Height Assigned. Please add Height in the query parameters in the url. EX. 'height=1000'");
     return;
  }
-
- if(!isImgPresent(imgName)) {
-    res.send(`No Image With this name (${imgName}) found. Please add the image with your desired name to assets/imgs folder in your project directory`)
-    return; 
+ if(!(+imgWidth>0)){
+    res.send("Width should be greater than 0");
+    return;
  }
 
-
-
-  next();
+ if(!(+imgHeight>0)){
+    res.send("Height should be greater than 0");
+    return;
+ }
+ isImgPresent(imgName+'.jpg').then(result=>{
+    if(!result){
+        res.send(`No Image With this name (${imgName}) found. Please add the image with your desired name to assets/imgs folder in your project directory`)
+        return; 
+    }else{
+        next();
+    }
+ })
 };
-function isImgPresent (imgName:string):boolean{
-    fs.readdir(mainImgsDir, (err, files:string []) => {
-       files.forEach(file => {
-          console.log(file);
-          if(file==imgName){
-            return true;
-          }
-        });
-      });
-      return false;
-      
+
+ async function  getAllImgs ():Promise<string[]>{
+   let imgs:string[]=[]
+   imgs = await fs.promises.readdir(mainImgsDir);
+   return imgs;
 }
+
+function  isImgPresent (imgName:string):Promise<boolean>{
+    const imgs=getAllImgs().then(result=>{
+        console.log('result :>> ', result);
+        if(result.indexOf(imgName)!=-1){
+            return true;
+        }else{
+        return false;
+        }
+    });
+    return imgs;
+   
+    
+ }
 
 
 export default handler;
