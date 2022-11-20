@@ -1,6 +1,6 @@
 {
   "name": "image_processing_project",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "img processing for fwd project",
   "main": "index.js",
   "scripts": {
