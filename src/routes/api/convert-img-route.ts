@@ -2,6 +2,7 @@ import express from 'express';
 import sharp from 'sharp';
 import fs from 'fs';
 import logger from '../../util/logger';
+import handler from '../../util/error-handling';
 import {
   accessImgsDir,
   dirName,
@@ -13,7 +14,7 @@ const port = 3000;
 
 const routes = express.Router();
 
-routes.get('/', logger, async function (req, res) {
+routes.get('/', handler,logger, async function (req, res) {
   const imgWidth = req.query.width as string;
   const imgHeight = req.query.height as string;
   const imgName = req.query.imgName as string;
