@@ -1,10 +1,10 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import fs from 'fs'
 import { mainImgsDir } from '../consts';
-const handler = (
+const handler:RequestHandler = (
   req: express.Request,
   res: express.Response,
-  next: Function
+  next
 ): void => {
   const imgWidth = req.query.width as string;
   const imgHeight = req.query.height as string;

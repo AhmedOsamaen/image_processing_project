@@ -1,5 +1,4 @@
 import { accessImgsDir, dirName, imgState, processedImgsDir } from "../consts";
-import express from 'express';
 import fs from 'fs';
 
 export function sendSavedImg(imgName: string,

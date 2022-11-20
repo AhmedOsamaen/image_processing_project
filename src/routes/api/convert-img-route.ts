@@ -6,8 +6,6 @@ import {
 } from '../../consts';
 import { processImg, saveImgToAssets } from '../../services/sharp-service';
 import { sendSavedImg } from '../../services/fixed-img-service';
-const app = express();
-const port = 3000;
 
 const routes = express.Router();
 

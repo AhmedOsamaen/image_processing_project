@@ -1,11 +1,11 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 
-const logger = (
+const logger :RequestHandler  = (
   req: express.Request,
   res: express.Response,
-  next: Function
+  next
 ): void => {
-  let url = req.url;
+  const url = req.url;
   console.log('url :>> ', url);
   const imgWidth = req.query.width as string;
   const imgHeight = req.query.height as string;

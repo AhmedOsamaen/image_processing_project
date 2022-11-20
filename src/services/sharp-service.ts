@@ -10,12 +10,11 @@ export async function processImg(
   ): Promise<void> {
     
     const img = mainImgsDir + fileName + '.jpg';
-     const s=  await sharp(img)
+      await sharp(img)
       .resize({ width: +imgWidth, height: +imgHeight })
       .toBuffer()
       .then((data) => {
         if(res){
-        console.log('inside funccccccccccccc :>> ');
         res.type('jpg').send(data);
         }
         return;
