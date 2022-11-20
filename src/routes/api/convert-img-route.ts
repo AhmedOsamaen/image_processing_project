@@ -14,7 +14,8 @@ const port = 3000;
 
 const routes = express.Router();
 
-routes.get('/', handler,logger, async function (req, res) {
+routes.get('/', handler,logger, async function (req: express.Request,
+  res: express.Response) {
   const imgWidth = req.query.width as string;
   const imgHeight = req.query.height as string;
   const imgName = req.query.imgName as string;

@@ -7,7 +7,7 @@ app.listen(port, () => {
   console.log('The server started on port::>> ', port);
 });
 
-app.get('/', function (req, res) {
+app.get('/', function (req:express.Request, res:express.Response) {
   res.send('Image Processing App is working');
 });
 
