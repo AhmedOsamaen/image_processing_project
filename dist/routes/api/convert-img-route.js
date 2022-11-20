@@ -44,8 +44,6 @@ var logger_1 = __importDefault(require("../../util/logger"));
 var error_handling_1 = __importDefault(require("../../util/error-handling"));
 var sharp_service_1 = require("../../services/sharp-service");
 var fixed_img_service_1 = require("../../services/fixed-img-service");
-var app = (0, express_1.default)();
-var port = 3000;
 var routes = express_1.default.Router();
 routes.get('/', error_handling_1.default, logger_1.default, function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -60,6 +58,7 @@ routes.get('/', error_handling_1.default, logger_1.default, function (req, res) 
                 return [2 /*return*/];
             }
             (0, sharp_service_1.saveImgToAssets)(imgName, +imgWidth, +imgHeight);
+            (0, sharp_service_1.processImg)(imgName, +imgWidth, +imgHeight, res);
             return [2 /*return*/];
         });
     });

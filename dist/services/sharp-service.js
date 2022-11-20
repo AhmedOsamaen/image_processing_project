@@ -44,7 +44,7 @@ var consts_1 = require("../consts");
 var sharp_1 = __importDefault(require("sharp"));
 function processImg(fileName, imgWidth, imgHeight, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var img, s;
+        var img;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -54,7 +54,6 @@ function processImg(fileName, imgWidth, imgHeight, res) {
                             .toBuffer()
                             .then(function (data) {
                             if (res) {
-                                console.log('inside funccccccccccccc :>> ');
                                 res.type('jpg').send(data);
                             }
                             return;
@@ -64,7 +63,7 @@ function processImg(fileName, imgWidth, imgHeight, res) {
                             return e;
                         })];
                 case 1:
-                    s = _a.sent();
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
