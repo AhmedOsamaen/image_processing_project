@@ -41,11 +41,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
-var convert_img_route_1 = __importDefault(require("../routes/api/convert-img-route"));
 var fs_1 = __importDefault(require("fs"));
 var consts_1 = require("../consts");
+var sharp_service_1 = require("../services/sharp-service");
 var request = (0, supertest_1.default)(index_1.default);
-convert_img_route_1.default.processImg('fjord', 452, 412);
+(0, sharp_service_1.saveImgToAssets)('fjord', 452, 412);
 describe('Test endpoint responses', function () {
     it('gets the main endpoint', function (done) {
         request.get('/').expect(200);
@@ -59,10 +59,7 @@ describe('Test endpoint responses', function () {
     });
 });
 describe('Test image functions', function () {
-    // beforeEach(() => {
-    //     routes.processImg('fjord',452,412);
-    // });
-    it('saves image to assets', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('finds saved img', function () { return __awaiter(void 0, void 0, void 0, function () {
         var savedFileName;
         return __generator(this, function (_a) {
             savedFileName = consts_1.processedImgsDir + 'fjord_' + 452 + '_' + 412 + '.jpg';

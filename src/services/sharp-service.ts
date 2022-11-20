@@ -6,14 +6,19 @@ export async function processImg(
     fileName: string,
     imgWidth: number,
     imgHeight: number,
-    res :express.Response
-  ): Promise<any> {
+    res ?:express.Response
+  ): Promise<void> {
+    
     const img = mainImgsDir + fileName + '.jpg';
-       await sharp(img)
+     const s=  await sharp(img)
       .resize({ width: +imgWidth, height: +imgHeight })
       .toBuffer()
       .then((data) => {
+        if(res){
+        console.log('inside funccccccccccccc :>> ');
         res.type('jpg').send(data);
+        }
+        return;
       })
       .catch((e) => {
         console.log('e :>> ', e);

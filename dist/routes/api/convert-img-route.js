@@ -40,58 +40,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var sharp_1 = __importDefault(require("sharp"));
-var fs_1 = __importDefault(require("fs"));
 var logger_1 = __importDefault(require("../../util/logger"));
-var consts_1 = require("../../consts");
+var error_handling_1 = __importDefault(require("../../util/error-handling"));
+var sharp_service_1 = require("../../services/sharp-service");
+var fixed_img_service_1 = require("../../services/fixed-img-service");
 var app = (0, express_1.default)();
 var port = 3000;
 var routes = express_1.default.Router();
-routes.get('/', logger_1.default, function (req, res) {
+routes.get('/', error_handling_1.default, logger_1.default, function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var imgWidth, imgHeight, imgName, savedFileName, accessFile, assetsDirectoryName, img;
+        var imgWidth, imgHeight, imgName, imgState;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    imgWidth = req.query.width;
-                    imgHeight = req.query.height;
-                    imgName = req.query.imgName;
-                    savedFileName = consts_1.processedImgsDir + imgName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-                    accessFile = consts_1.accessImgsDir + imgName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-                    if (consts_1.dirName.indexOf('src') != -1) {
-                        assetsDirectoryName = consts_1.dirName.replace('src', '') + accessFile;
-                    }
-                    else {
-                        assetsDirectoryName = consts_1.dirName.replace('dist', '') + accessFile;
-                    }
-                    if (fs_1.default.existsSync(savedFileName)) {
-                        res.type('jpg').sendFile(assetsDirectoryName);
-                        return [2 /*return*/];
-                    }
-                    processImg(imgName, +imgWidth, +imgHeight);
-                    img = consts_1.mainImgsDir + imgName + '.jpg';
-                    return [4 /*yield*/, (0, sharp_1.default)(img)
-                            .resize({ width: +imgWidth, height: +imgHeight })
-                            .toBuffer()
-                            .then(function (data) {
-                            res.type('jpg').send(data);
-                        })
-                            .catch(function (e) {
-                            console.log('e :>> ', e);
-                            return e;
-                        })];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
+            imgWidth = req.query.width;
+            imgHeight = req.query.height;
+            imgName = req.query.imgName;
+            imgState = (0, fixed_img_service_1.sendSavedImg)(imgName, +imgWidth, +imgHeight);
+            if (imgState.found) {
+                res.type('jpg').sendFile(imgState.name);
+                return [2 /*return*/];
             }
+            (0, sharp_service_1.saveImgToAssets)(imgName, +imgWidth, +imgHeight);
+            return [2 /*return*/];
         });
     });
 });
-function processImg(fileName, imgWidth, imgHeight) {
-    var img = consts_1.mainImgsDir + fileName + '.jpg';
-    var savedFileName = consts_1.processedImgsDir + fileName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-    (0, sharp_1.default)(img)
-        .resize({ width: imgWidth, height: imgHeight })
-        .toFile(savedFileName);
-}
-exports.default = { routes: routes, processImg: processImg };
+exports.default = { routes: routes };
