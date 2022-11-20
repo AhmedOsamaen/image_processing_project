@@ -1,14 +1,11 @@
 import express from 'express';
-import sharp from 'sharp';
-import fs from 'fs';
 import logger from '../../util/logger';
 import handler from '../../util/error-handling';
 import {
-  accessImgsDir,
-  dirName,
-  mainImgsDir,
-  processedImgsDir,
+  imgState,
 } from '../../consts';
+import { processImg, saveImgToAssets } from '../../services/sharp-service';
+import { sendSavedImg } from '../../services/fixed-img-service';
 const app = express();
 const port = 3000;
 
@@ -19,45 +16,15 @@ routes.get('/', handler,logger, async function (req: express.Request,
   const imgWidth = req.query.width as string;
   const imgHeight = req.query.height as string;
   const imgName = req.query.imgName as string;
-  const savedFileName =
-    processedImgsDir + imgName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-  const accessFile =
-    accessImgsDir + imgName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-  let assetsDirectoryName: string;
-  if (dirName.indexOf('src') != -1) {
-    assetsDirectoryName = dirName.replace('src', '') + accessFile;
-  } else {
-    assetsDirectoryName = dirName.replace('dist', '') + accessFile;
-  }
-  if (fs.existsSync(savedFileName)) {
-    res.type('jpg').sendFile(assetsDirectoryName);
+  const imgState:imgState = sendSavedImg(imgName,+imgWidth,+imgHeight);
+  if(imgState.found){
+    res.type('jpg').sendFile(imgState.name);
     return;
   }
-  processImg(imgName, +imgWidth, +imgHeight);
-  const img = mainImgsDir + imgName + '.jpg';
-  await sharp(img)
-    .resize({ width: +imgWidth, height: +imgHeight })
-    .toBuffer()
-    .then((data) => {
-      res.type('jpg').send(data);
-    })
-    .catch((e) => {
-      console.log('e :>> ', e);
-      return e;
-    });
+  saveImgToAssets(imgName, +imgWidth, +imgHeight);
+  processImg(imgName, +imgWidth, +imgHeight,res);
+ 
 });
 
-function processImg(
-  fileName: string,
-  imgWidth: number,
-  imgHeight: number
-): void {
-  const img = mainImgsDir + fileName + '.jpg';
-  const savedFileName =
-    processedImgsDir + fileName + '_' + imgWidth + '_' + imgHeight + '.jpg';
-  sharp(img)
-    .resize({ width: imgWidth, height: imgHeight })
-    .toFile(savedFileName);
-}
 
-export default { routes, processImg };
+export default { routes };
